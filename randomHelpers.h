@@ -2,17 +2,21 @@
 //
 //    FILE: randomHelpers.h
 //  AUTHOR: Rob dot Tillaart at gmail dot com
-// VERSION: 0.2.0
+// VERSION: 0.2.1
 // PURPOSE: Arduino library with helper function for faster random bits
 //     URL: https://github.com/RobTillaart/randomHelpers
 //
-// HISTORY:
-// 0.2.0    2020-07-01 rewrite.
-// 0.1.01   2015-08-18 bug fixes and further optimizations.
-// 0.1.00   2015-08-17 initial version.
-//
+//  HISTORY:
+//  0.2.1   2021-01-07  Arduino-CI
+//  0.2.0   2020-07-01  rewrite.
+//  0.1.01  2015-08-18  bug fixes and further optimizations.
+//  0.1.00  2015-08-17  initial version.
+
+
 
 #include "Arduino.h"
+
+#define RANDOM_HELPERS_VERSION       (F("0.2.1"))
 
 // the idea is to have one buffer ( __randomBuffer) which holds 32 random bits. 
 // Every call fetches bits from that buffer and if it does not hold enough 
@@ -63,8 +67,40 @@ bool getRandom1()
   __randomIdx--;
   return rv;
 }
+
 // typical use 
-bool inline flipCoin() { return getRandom1(); };
+bool inline flipCoin()
+{ 
+  return getRandom1();
+};
+
+
+uint8_t getRandom4()
+{
+  if (__randomIdx < 4)
+  {
+    __randomBuffer = getRandom32();
+    __randomIdx = 32;
+  }
+  uint8_t rv = __randomBuffer & 0x0F;
+  __randomBuffer >>= 4;
+  __randomIdx -= 4;
+  return rv;
+}
+
+
+uint8_t getRandom5()
+{
+  if (__randomIdx < 5)
+  {
+    __randomBuffer = getRandom32();
+    __randomIdx = 32;
+  }
+  uint8_t rv = __randomBuffer & 0x1F;
+  __randomBuffer >>= 5;
+  __randomIdx -= 5;
+  return rv;
+}
 
 
 uint8_t getRandom6()
@@ -85,7 +121,7 @@ uint8_t getRandom6()
 uint8_t inline throwDice() 
 {
   uint8_t rv = 0;
-  uint8_t x = getRandom6();
+  uint8_t x = getRandom5();
   for (uint8_t i = 0; i < 6 ; i++)
   {
     if (x & 1) rv++;
@@ -123,9 +159,17 @@ uint16_t getRandom16()
 }
 
 
-uint16_t getRandom24()
+uint32_t getRandom24()
 {
   return getRandom32() & 0xFFFFFF;
+}
+
+uint64_t getRandom64()
+{
+  uint64_t rv = getRandom32();
+  rv <<= 32;
+  rv |= getRandom32();
+  return rv;
 }
 
 /*
@@ -153,7 +197,7 @@ uint32_t getRandomBits(uint8_t n)
 
   // for large values of n the more straightforward approach is faster (UNO).
   if (n > 32) n = 32;
-  //if (n > 20) return getRandom32() >> (32 - n);
+  if (n >= 20) return getRandom32() >> (32 - n);
 
   if (n >= __randomIdx)
   {
