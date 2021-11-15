@@ -47,7 +47,7 @@ functions implemented are
 - **uint32_t getRandom32()** returns 0 .. 2^32 - 1 (4 bytes) this is the core random generator
 - **uint64_t getRandom64()** returns 0.. 2^64 - 1 (8 bytes).
 - **uint32_t getRandomBits(n)** returns 0.. 2^n - 1  This works well for 1..16 bits but above 16 it is slower than the standard way. 
-- **uint8_t throwDice()** returns 1..6, counts bits set in **getRandom5() + 1**. Expected not uniform (to be tested).
+- **uint8_t throwDice()** returns 1..6.
 
 The examples show how to use these and how their performance gain relative to
 calling **random()** for every random number.
