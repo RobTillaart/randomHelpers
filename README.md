@@ -34,13 +34,20 @@ This library relates to https://github.com/RobTillaart/Prandom
 
 ## Interface
 
+```cpp
+#include "randomHelpers.h"
+```
+
 #### generators (sort of)
 
 - **uint32_t Marsaglia()** fast PRNG.
 - **bool seedMarsaglia(uint32_t a, uint32_t b)** seed the Marsaglia PRNG. a and b should not be 0. returns true on success.
 
 #### getters (sort of)
+
 - **bool getRandom1()** returns 0 or 1, false or true. 
+- **uint8_t getRandom2()** returns 0 .. 3.
+- **uint8_t getRandom3()** returns 0 .. 7.
 - **uint8_t getRandom4()** returns 0 .. 15.
 - **uint8_t getRandom5()** returns 0 .. 31.
 - **uint8_t getRandom6()** returns 0 .. 63.
@@ -59,9 +66,11 @@ This library relates to https://github.com/RobTillaart/Prandom
 The examples show how to use these and how their performance gain relative to
 calling **random()** for every random number.
 
+
 ## Performance
 
 to elaborate
+
 
 ## Operation
 
@@ -70,20 +79,24 @@ See examples
 
 ## Future
 
-#### must
+#### Must
+
 - improve/update documentation
   - add performance figures
 
-#### should
+#### Should
+
 - wrap all up in a class.
 - add JKISS? other RNG's
 
-#### could
+#### Could
+
 - improve performance getRandomBits(n) for n = 17..31
 - investigate new tricks :)
 - test if the functions are uniform.
 - rename getRandom64() ==> get64()  etc.
   - when it is part of a class.
-- add **getRandom2(), getRandom3(), getRandom12()**?
+- add **getRandom12()**?
 
+#### Wont
 

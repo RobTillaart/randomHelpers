@@ -2,14 +2,14 @@
 //
 //    FILE: randomHelpers.h
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.2.5
+// VERSION: 0.2.6
 // PURPOSE: Arduino library with helper function for faster random bits
 //     URL: https://github.com/RobTillaart/randomHelpers
 
 
 #include "Arduino.h"
 
-#define RANDOM_HELPERS_VERSION                (F("0.2.5"))
+#define RANDOM_HELPERS_VERSION                (F("0.2.6"))
 
 
 //  the idea is to have one buffer ( __randomBuffer) which holds 32 random bits.
@@ -37,8 +37,9 @@ uint32_t getRandom32();
 
 bool getRandom1();
 
-//  typical use
-bool inline flipCoin();
+uint8_t getRandom2();
+
+uint8_t getRandom3();
 
 uint8_t getRandom4();
 
@@ -46,8 +47,7 @@ uint8_t getRandom5();
 
 uint8_t getRandom6();
 
-//  typical use
-uint8_t throwDice();
+
 
 uint8_t getRandom8();
 
@@ -56,6 +56,16 @@ uint16_t getRandom16();
 uint32_t getRandom24();
 
 uint64_t getRandom64();
+
+/////////////////////////////////////////////////
+//
+//  TYPICAL USES
+//
+bool inline flipCoin();  //  0..1
+
+uint8_t throwDice();     //  1..6
+
+
 
 /*
 // works well for 1..16; but above it is worse
@@ -79,6 +89,5 @@ uint32_t getRandomBits(uint8_t n)
 uint32_t getRandomBits(uint8_t n);
 
 
-
-// -- END OF FILE --
+//  -- END OF FILE --
 

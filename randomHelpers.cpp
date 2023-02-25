@@ -1,8 +1,7 @@
-#pragma once
 //
 //    FILE: randomHelpers.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.2.5
+// VERSION: 0.2.6
 // PURPOSE: Arduino library with helper function for faster random bits
 //     URL: https://github.com/RobTillaart/randomHelpers
 
@@ -18,6 +17,7 @@
 //  efficient way.
 //
 //  TBD: put it in a class ?
+
 
 uint32_t  __randomBuffer = 0;
 uint8_t   __randomIdx = 0;
@@ -36,28 +36,28 @@ uint32_t m_z = 2;
 
 uint32_t Marsaglia()
 {
-    m_z = 36969L * (m_z & 65535L) + (m_z >> 16);
-    m_w = 18000L * (m_w & 65535L) + (m_w >> 16);
-    return (m_z << 16) + m_w;  /* 32-bit result */
+  m_z = 36969L * (m_z & 65535L) + (m_z >> 16);
+  m_w = 18000L * (m_w & 65535L) + (m_w >> 16);
+  return (m_z << 16) + m_w;  /* 32-bit result */
 } 
 
 
 bool seedMarsaglia(uint32_t a, uint32_t b)
 {
-  if (a == 0 || b == 0) return false;
+  if (a == 0 || b == 0)
+  {
+    //  fill a and b with built-in generator?
+    return false;
+  }
   m_w = a;
   m_z = b;
   return true;
 }
 
-
-uint32_t getRandom32()
-{
-  //  return random(0xFFFFFFFF);  //  use the built in
-  return Marsaglia();
-}
-
-
+//////////////////////////////////////////////////////////
+//
+//
+//
 bool getRandom1()
 {
   if (__randomIdx < 1)
@@ -71,11 +71,34 @@ bool getRandom1()
   return rv;
 }
 
-//  typical use 
-bool inline flipCoin()
-{ 
-  return getRandom1();
-};
+
+uint8_t getRandom2()
+{
+  if (__randomIdx < 2)
+  {
+    __randomBuffer = getRandom32();
+    __randomIdx = 32;
+  }
+  uint8_t rv = __randomBuffer & 0x03;
+  __randomBuffer >>= 2;
+  __randomIdx -= 2;
+  return rv;
+}
+
+
+uint8_t getRandom3()
+{
+  if (__randomIdx < 3)
+  {
+    __randomBuffer = getRandom32();
+    __randomIdx = 32;
+  }
+  uint8_t rv = __randomBuffer & 0x07;
+  __randomBuffer >>= 3;
+  __randomIdx -= 3;
+  return rv;
+}
+
 
 
 uint8_t getRandom4()
@@ -120,17 +143,16 @@ uint8_t getRandom6()
 }
 
 
-//  typical use
-uint8_t throwDice() 
+uint8_t getRandom7()
 {
-  if (__randomIdx < 16)
+  if (__randomIdx < 7)
   {
     __randomBuffer = getRandom32();
     __randomIdx = 32;
   }
-  uint16_t rv = __randomBuffer % 6 + 1;
-  __randomBuffer >>= 3;
-  __randomIdx -= 3;
+  uint8_t rv = __randomBuffer & 0x7F;
+  __randomBuffer >>= 7;
+  __randomIdx -= 7;
   return rv;
 }
 
@@ -169,6 +191,13 @@ uint32_t getRandom24()
 }
 
 
+uint32_t getRandom32()
+{
+  //  return random(0xFFFFFFFF);  //  use the built in
+  return Marsaglia();
+}
+
+
 uint64_t getRandom64()
 {
   uint64_t rv = getRandom32();
@@ -176,6 +205,55 @@ uint64_t getRandom64()
   rv |= getRandom32();
   return rv;
 }
+
+
+/////////////////////////////////////////////////
+//
+//  TYPICAL USES
+//
+bool inline flipCoin()
+{ 
+  return getRandom1();
+}
+
+
+//  div3() derived from divmod3() from fast_math.h
+//
+uint32_t div3(uint32_t in)
+{
+    uint32_t q = (in >> 1) + (in >> 3);
+    q = q + (q >> 4);
+    q = q + (q >> 8);
+    q = q + (q >> 16);
+    q = q >> 1;
+    uint32_t r = in - q * 3;
+    q = q + (r * 86 >> 8);
+    return q;
+}
+
+
+uint8_t throwDice() 
+{
+  if (__randomIdx < 16)
+  {
+    __randomBuffer = getRandom32();
+    __randomIdx = 32;
+  }
+  uint32_t tmp = div3(__randomBuffer) >> 1;    //  divide by 6
+  uint8_t rv = __randomBuffer - tmp * 6 + 1;   //  remainder + 1
+  __randomBuffer >>= 3;
+  __randomIdx -= 3;
+  return rv;
+  //  previous.
+  // uint8_t rv = __randomBuffer % 6 + 1;     //  remainder + 1
+  // __randomBuffer >>= 3;
+  // __randomIdx -= 3;
+  // return rv;
+}
+
+
+
+
 
 /*
 //  works well for 1..16; but above it is worse
