@@ -33,8 +33,6 @@ uint32_t Marsaglia();
 
 bool seedMarsaglia(uint32_t a, uint32_t b);
 
-uint32_t getRandom32();
-
 bool getRandom1();
 
 uint8_t getRandom2();
@@ -47,7 +45,7 @@ uint8_t getRandom5();
 
 uint8_t getRandom6();
 
-
+uint8_t getRandom7();
 
 uint8_t getRandom8();
 
@@ -55,7 +53,10 @@ uint16_t getRandom16();
 
 uint32_t getRandom24();
 
+uint32_t getRandom32();
+
 uint64_t getRandom64();
+
 
 /////////////////////////////////////////////////
 //

@@ -43,7 +43,7 @@ This library relates to https://github.com/RobTillaart/Prandom
 - **uint32_t Marsaglia()** fast PRNG.
 - **bool seedMarsaglia(uint32_t a, uint32_t b)** seed the Marsaglia PRNG. a and b should not be 0. returns true on success.
 
-#### getters (sort of)
+#### getters
 
 - **bool getRandom1()** returns 0 or 1, false or true. 
 - **uint8_t getRandom2()** returns 0 .. 3.
@@ -51,6 +51,7 @@ This library relates to https://github.com/RobTillaart/Prandom
 - **uint8_t getRandom4()** returns 0 .. 15.
 - **uint8_t getRandom5()** returns 0 .. 31.
 - **uint8_t getRandom6()** returns 0 .. 63.
+- **uint8_t getRandom7()** returns 0 .. 127.
 - **uint8_t getRandom8()** returns 0 .. 255 typically a byte.
 - **uint16_t getRandom16()** returns 0 .. 65535 (2 bytes).
 - **uint32_t getRandom24()** returns 0 .. 16777215  (3 bytes), e.g. random RGB colour.
@@ -83,20 +84,25 @@ See examples
 
 - improve/update documentation
   - add performance figures
+- wrap all up in a class.
+  - rename getRandom64() ==> get64()  etc.
 
 #### Should
 
-- wrap all up in a class.
+- improve performance getRandomBits(n) for n = 17..31
+  - how to preserve bits if idx too small.
 - add JKISS? other RNG's
+- test if the functions are uniform.
 
 #### Could
 
 - improve performance getRandomBits(n) for n = 17..31
 - investigate new tricks :)
-- test if the functions are uniform.
-- rename getRandom64() ==> get64()  etc.
-  - when it is part of a class.
-- add **getRandom12()**?
+- add **getRandom9() 10()** can be done 3x from 32 bits.
+- 11..16 => 2x from 32 bits
+- 
+- add **getRandom12()** clipping get16 is equally fast.
 
 #### Wont
+
 

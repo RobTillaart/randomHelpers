@@ -32,12 +32,14 @@ void loop()
 void test_throwDice()
 {
   Serial.println(__FUNCTION__);
+  Serial.println("takes ~20 seconds...\n");
+
   delay(10);
-  uint16_t ar[10];
+  uint32_t ar[10];
   for (int i = 0; i < 10; i++) ar[i] = 0;
 
   start = micros();
-  for (uint32_t i = 0; i < 100000; i++)
+  for (uint32_t i = 0; i < 1000000; i++)
   {
     uint8_t x = throwDice();
     ar[x - 1]++;
@@ -52,12 +54,12 @@ void test_throwDice()
   for (int i = 0; i < 6; i++)
   {
     Serial.print("\t");
-    Serial.print(ar[i] / 166.6666 - 100, 2);
+    Serial.print(ar[i] / 1666.6666 - 100, 2);
     Serial.print("%");
   }
   Serial.println();
   Serial.println();
-  Serial.println((stop - start) * 1e-5, 2);
+  Serial.println((stop - start) * 1e-6, 2);
   Serial.println();
   delay(10);
 }

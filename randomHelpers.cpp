@@ -10,9 +10,9 @@
 #include "randomHelpers.h"
 
 
-//  the idea is to have one buffer ( __randomBuffer) which holds 32 random bits. 
-//  Every call fetches bits from that buffer and if it does not hold enough 
-//  bits any more it fills the buffer first. This way the relative expensive 
+//  the idea is to have one buffer ( __randomBuffer) which holds 32 random bits.
+//  Every call fetches bits from that buffer and if it does not hold enough
+//  bits any more it fills the buffer first. This way the relative expensive
 //  calls to random() which produces a 32 bit number are minimized in an
 //  efficient way.
 //
@@ -25,13 +25,13 @@ uint8_t   __randomIdx = 0;
 
 ///////////////////////////////////////////////////////////////////////////
 //
-//  An example of a simple pseudo-random number generator is the 
+//  An example of a simple pseudo-random number generator is the
 //  Multiply-with-carry method invented by George Marsaglia.
-//  it has two initializers (not zero) which can be changed 
+//  it has two initializers (not zero) which can be changed
 //  to seed the generator.
 //
 uint32_t m_w = 1;
-uint32_t m_z = 2; 
+uint32_t m_z = 2;
 
 
 uint32_t Marsaglia()
@@ -39,7 +39,7 @@ uint32_t Marsaglia()
   m_z = 36969L * (m_z & 65535L) + (m_z >> 16);
   m_w = 18000L * (m_w & 65535L) + (m_w >> 16);
   return (m_z << 16) + m_w;  /* 32-bit result */
-} 
+}
 
 
 bool seedMarsaglia(uint32_t a, uint32_t b)
@@ -212,7 +212,7 @@ uint64_t getRandom64()
 //  TYPICAL USES
 //
 bool inline flipCoin()
-{ 
+{
   return getRandom1();
 }
 
@@ -232,7 +232,7 @@ uint32_t div3(uint32_t in)
 }
 
 
-uint8_t throwDice() 
+uint8_t throwDice()
 {
   if (__randomIdx < 16)
   {
@@ -274,7 +274,7 @@ uint32_t getRandomBits(uint8_t n)
 
 //  n = 1..31
 //  TODO: performance gain too low for n > 16
-uint32_t getRandomBits(uint8_t n) 
+uint32_t getRandomBits(uint8_t n)
 {
   uint32_t rv = 0;
 

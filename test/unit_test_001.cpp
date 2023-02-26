@@ -58,7 +58,7 @@ unittest(test_all)
     assertMore(16,         getRandom4());
     assertMore(32,         getRandom5());
     assertMore(64,         getRandom6());
-    assertMore(128,        getRandom6());
+    assertMore(128,        getRandom7());
     assertMore(255,        getRandom8());
     assertMore(65536,      getRandom16());
     assertMore(16777215,   getRandom24());
