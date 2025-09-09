@@ -17,8 +17,8 @@ void setup()
   while (!Serial);
   Serial.println();
   Serial.println(__FILE__);
-  Serial.print("RANDOM_HELPERS_VERSION: ");
-  Serial.println(RANDOM_HELPERS_VERSION);
+  //  Serial.print("RANDOM_HELPERS_VERSION: ");
+  //  Serial.println(RANDOM_HELPERS_VERSION);
   Serial.println();
   delay(100);
 
